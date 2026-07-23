@@ -8,18 +8,14 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <p class="text-sm text-gray-600">
-                    {{ __('Cari nama tanpa peduli huruf besar/kecil, urutan kata, atau salah ketik ringan.') }}
-                </p>
-
-                @if ($total === 0)
-                    <p class="text-sm text-gray-500 mt-4">
+            @if ($total === 0)
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <p class="text-sm text-gray-500">
                         {{ __('Belum ada data. Impor file database lewat') }}
                         <code class="bg-gray-100 text-gray-700 px-1.5 py-0.5 rounded text-xs">php artisan manifest:import</code>.
                     </p>
-                @endif
-            </div>
+                </div>
+            @endif
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6" id="searchPanel" @style(['display:none' => $total === 0])>
                 <div class="flex items-center gap-3">
