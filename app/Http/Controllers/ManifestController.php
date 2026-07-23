@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Passenger;
+use App\Services\ManifestImporter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use PDO;
+use RuntimeException;
 
 class ManifestController extends Controller
 {
@@ -18,7 +18,7 @@ class ManifestController extends Controller
         ]);
     }
 
-    public function import(Request $request)
+    public function import(Request $request, ManifestImporter $importer)
     {
         $request->validate([
             'db_file' => ['required', 'file', 'max:204800'],
@@ -31,45 +31,11 @@ class ManifestController extends Controller
             return back()->withErrors(['db_file' => 'Format file harus .db, .sqlite, atau .sqlite3.']);
         }
 
-        $pdo = new PDO('sqlite:'.$file->getRealPath());
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $tableExists = $pdo->query(
-            "SELECT name FROM sqlite_master WHERE type='table' AND name='passengers'"
-        )->fetch();
-
-        if (! $tableExists) {
-            return back()->withErrors(['db_file' => 'File tidak memiliki tabel "passengers".']);
+        try {
+            $imported = $importer->importFromPath($file->getRealPath());
+        } catch (RuntimeException $e) {
+            return back()->withErrors(['db_file' => $e->getMessage()]);
         }
-
-        $columns = implode(', ', self::COLUMNS);
-        $stmt = $pdo->query("SELECT {$columns} FROM passengers");
-
-        $imported = 0;
-
-        DB::transaction(function () use ($stmt, &$imported) {
-            Passenger::truncate();
-
-            $chunk = [];
-            $now = now();
-
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $row['created_at'] = $now;
-                $row['updated_at'] = $now;
-                $chunk[] = $row;
-
-                if (count($chunk) >= 1000) {
-                    Passenger::insert($chunk);
-                    $imported += count($chunk);
-                    $chunk = [];
-                }
-            }
-
-            if ($chunk) {
-                Passenger::insert($chunk);
-                $imported += count($chunk);
-            }
-        });
 
         return back()->with('status', "Berhasil mengimpor {$imported} baris penumpang.");
     }
