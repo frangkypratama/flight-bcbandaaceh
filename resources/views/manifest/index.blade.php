@@ -13,20 +13,12 @@
                     {{ __('Cari nama tanpa peduli huruf besar/kecil, urutan kata, atau salah ketik ringan.') }}
                 </p>
 
-                <div class="flex items-center gap-2 text-sm mt-4">
-                    @if ($total > 0)
-                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span class="text-emerald-700 font-medium">
-                            {{ number_format($total, 0, ',', '.') }} {{ __('baris penumpang tersimpan di server.') }}
-                        </span>
-                    @else
-                        <span class="inline-block w-2 h-2 rounded-full bg-gray-400"></span>
-                        <span class="text-gray-500">
-                            {{ __('Belum ada data. Impor file database lewat') }}
-                            <code class="bg-gray-100 text-gray-700 px-1.5 py-0.5 rounded text-xs">php artisan manifest:import</code>.
-                        </span>
-                    @endif
-                </div>
+                @if ($total === 0)
+                    <p class="text-sm text-gray-500 mt-4">
+                        {{ __('Belum ada data. Impor file database lewat') }}
+                        <code class="bg-gray-100 text-gray-700 px-1.5 py-0.5 rounded text-xs">php artisan manifest:import</code>.
+                    </p>
+                @endif
             </div>
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6" id="searchPanel" @style(['display:none' => $total === 0])>
