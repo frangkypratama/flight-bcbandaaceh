@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Cari Manifest Penumpang</title>
 <style>
   :root {
@@ -69,46 +68,11 @@
     box-shadow: 0 20px 50px -25px rgba(0,0,0,0.6);
   }
 
-  /* --- drop zone --- */
-  .dropzone {
-    border: 1.5px dashed var(--border);
-    border-radius: 12px;
-    padding: 28px 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color .18s ease, background .18s ease, transform .18s ease;
-    background: rgba(255,255,255,0.015);
-    display: block;
-  }
-  .dropzone:hover { border-color: var(--accent); background: rgba(91,140,255,0.06); }
-  .dropzone.drag { border-color: var(--accent); background: rgba(91,140,255,0.1); transform: scale(1.005); }
-  .dropzone .dz-icon { font-size: 26px; margin-bottom: 8px; opacity: 0.85; }
-  .dropzone .dz-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
-  .dropzone .dz-sub { font-size: 12.5px; color: var(--muted); }
-  .dropzone input[type="file"] { display: none; }
-
-  .import-btn {
-    margin-top: 14px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 10px;
-    font-size: 13.5px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .import-btn:hover { filter: brightness(1.08); }
-
-  .status-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 13px; }
+  .status-row { display: flex; align-items: center; gap: 8px; font-size: 13px; }
   .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
   .dot.ok { background: var(--good); box-shadow: 0 0 10px rgba(55,201,143,0.7); }
-  .dot.err { background: var(--bad); box-shadow: 0 0 10px rgba(240,97,107,0.7); }
-  .dot.loading { background: var(--warn); animation: pulse 1s infinite ease-in-out; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
   .status-text { color: var(--muted); }
   .status-text.ok { color: var(--good); }
-  .status-text.err { color: var(--bad); }
 
   /* --- search --- */
   .search-box {
@@ -214,30 +178,13 @@
   <div class="sub">Cari nama tanpa peduli huruf besar/kecil, urutan kata, atau salah ketik ringan &mdash; data tersimpan di server, semua orang bisa mencari tanpa perlu impor ulang.</div>
 
   <div class="panel">
-    <form id="importForm" method="POST" action="{{ route('manifest.import') }}" enctype="multipart/form-data">
-      @csrf
-      <label class="dropzone" id="dropzone" for="dbFile">
-        <div class="dz-icon">&#128193;</div>
-        <div class="dz-title" id="dzTitle">Klik atau seret file manifest_btj.db ke sini</div>
-        <div class="dz-sub">Format .db / .sqlite / .sqlite3 &mdash; akan mengganti data yang sudah tersimpan</div>
-        <input type="file" id="dbFile" name="db_file" accept=".db,.sqlite,.sqlite3">
-      </label>
-      <button type="submit" class="import-btn" id="importBtn">Impor ke Server</button>
-    </form>
-
     <div class="status-row">
-      @if (session('status'))
-        <div class="dot ok"></div>
-        <div class="status-text ok">{{ session('status') }}</div>
-      @elseif ($errors->any())
-        <div class="dot err"></div>
-        <div class="status-text err">{{ $errors->first() }}</div>
-      @elseif ($total > 0)
+      @if ($total > 0)
         <div class="dot ok"></div>
         <div class="status-text ok">{{ number_format($total, 0, ',', '.') }} baris penumpang tersimpan di server.</div>
       @else
         <div class="dot"></div>
-        <div class="status-text">Belum ada data. Impor file database untuk mulai mencari.</div>
+        <div class="status-text">Belum ada data. Impor file database lewat <code>php artisan manifest:import</code>.</div>
       @endif
     </div>
   </div>
@@ -259,47 +206,10 @@
 let debounceTimer = null;
 let requestSeq = 0;
 
-const dbFileInput = document.getElementById('dbFile');
-const dropzone = document.getElementById('dropzone');
-const dzTitle = document.getElementById('dzTitle');
-const importForm = document.getElementById('importForm');
-const importBtn = document.getElementById('importBtn');
-const searchPanel = document.getElementById('searchPanel');
 const qInput = document.getElementById('q');
 const resultsEl = document.getElementById('results');
 const countBadge = document.getElementById('countBadge');
 const fuzzyNote = document.getElementById('fuzzyNote');
-
-['dragover', 'dragenter'].forEach(evt => {
-  dropzone.addEventListener(evt, e => {
-    e.preventDefault();
-    dropzone.classList.add('drag');
-  });
-});
-['dragleave', 'dragend', 'drop'].forEach(evt => {
-  dropzone.addEventListener(evt, e => {
-    dropzone.classList.remove('drag');
-  });
-});
-dropzone.addEventListener('drop', e => {
-  e.preventDefault();
-  const file = e.dataTransfer.files[0];
-  if (file) {
-    dbFileInput.files = e.dataTransfer.files;
-    submitImport(file.name);
-  }
-});
-dbFileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) submitImport(file.name);
-});
-
-function submitImport(fileName) {
-  dzTitle.textContent = fileName;
-  importBtn.disabled = true;
-  importBtn.textContent = 'Mengimpor... (bisa beberapa detik untuk data besar)';
-  importForm.submit();
-}
 
 qInput.addEventListener('input', () => {
   clearTimeout(debounceTimer);

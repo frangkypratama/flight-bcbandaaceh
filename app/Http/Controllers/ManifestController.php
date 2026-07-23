@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Passenger;
-use App\Services\ManifestImporter;
 use Illuminate\Http\Request;
-use RuntimeException;
 
 class ManifestController extends Controller
 {
@@ -16,28 +14,6 @@ class ManifestController extends Controller
         return view('manifest.index', [
             'total' => Passenger::count(),
         ]);
-    }
-
-    public function import(Request $request, ManifestImporter $importer)
-    {
-        $request->validate([
-            'db_file' => ['required', 'file', 'max:204800'],
-        ]);
-
-        $file = $request->file('db_file');
-        $extension = strtolower($file->getClientOriginalExtension());
-
-        if (! in_array($extension, ['db', 'sqlite', 'sqlite3'], true)) {
-            return back()->withErrors(['db_file' => 'Format file harus .db, .sqlite, atau .sqlite3.']);
-        }
-
-        try {
-            $imported = $importer->importFromPath($file->getRealPath());
-        } catch (RuntimeException $e) {
-            return back()->withErrors(['db_file' => $e->getMessage()]);
-        }
-
-        return back()->with('status', "Berhasil mengimpor {$imported} baris penumpang.");
     }
 
     public function search(Request $request)

@@ -14,7 +14,6 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/manifest', [ManifestController::class, 'index'])->name('manifest.index');
-    Route::post('/manifest/import', [ManifestController::class, 'import'])->name('manifest.import');
     Route::get('/manifest/search', [ManifestController::class, 'search'])->name('manifest.search');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
