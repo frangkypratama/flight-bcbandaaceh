@@ -49,6 +49,22 @@
                         </p>
                     </div>
                 </a>
+
+                <a href="{{ route('users.create') }}" class="group bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 hover:shadow-md transition flex items-start gap-4">
+                    <div class="shrink-0 flex items-center justify-center w-12 h-12 rounded-lg bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path d="M6.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM3.25 19.125a7.125 7.125 0 0 1 12.663-4.482.75.75 0 0 1-.575 1.207 8.647 8.647 0 0 0-6.088 2.518.75.75 0 0 1-1.05 1.005A5.625 5.625 0 0 0 3.25 19.125Zm.001.037.008-.037-.008.037ZM18.75 8.25a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V8.25Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800 group-hover:text-indigo-600 transition">
+                            {{ __('Tambah User Baru') }}
+                        </h4>
+                        <p class="text-sm text-gray-500 mt-1">
+                            {{ __('Buat akun baru untuk pengguna lain.') }}
+                        </p>
+                    </div>
+                </a>
             </div>
 
         </div>

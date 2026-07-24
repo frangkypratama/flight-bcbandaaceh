@@ -19,6 +19,9 @@
                     <x-nav-link :href="route('manifest.index')" :active="request()->routeIs('manifest.index')">
                         {{ __('Manifest Penumpang') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('users.create')" :active="request()->routeIs('users.create')">
+                        {{ __('Tambah User') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -76,6 +79,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('manifest.index')" :active="request()->routeIs('manifest.index')">
                 {{ __('Manifest Penumpang') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('users.create')" :active="request()->routeIs('users.create')">
+                {{ __('Tambah User') }}
             </x-responsive-nav-link>
         </div>
 
