@@ -26,9 +26,6 @@
                     <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-indigo-600 transition">{{ __('Dashboard') }}</a>
                 @else
                     <a href="{{ route('login') }}" class="text-gray-600 hover:text-indigo-600 transition">{{ __('Masuk') }}</a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition">{{ __('Daftar') }}</a>
-                    @endif
                 @endauth
             </nav>
         </header>
@@ -55,11 +52,6 @@
                         <a href="{{ route('login') }}" class="px-6 py-3 rounded-md bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">
                             {{ __('Masuk') }}
                         </a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="px-6 py-3 rounded-md bg-white text-gray-700 font-semibold border border-gray-300 hover:bg-gray-50 transition">
-                                {{ __('Daftar Akun') }}
-                            </a>
-                        @endif
                     @endauth
                 </div>
             </div>
