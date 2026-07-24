@@ -15,9 +15,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-indigo-50 via-white to-gray-100">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-blue-50 via-white to-gray-100">
             <div class="flex flex-col items-center gap-2">
-                <a href="/" class="flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-200">
+                <a href="/" class="flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-800 shadow-lg shadow-blue-200">
                     <x-application-logo class="w-8 h-8 fill-current text-white" />
                 </a>
                 <span class="font-semibold text-gray-700 text-lg">{{ config('app.name') }}</span>

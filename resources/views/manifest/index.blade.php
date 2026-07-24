@@ -28,7 +28,7 @@
                             autocomplete="off"
                         />
                     </div>
-                    <span id="countBadge" class="hidden whitespace-nowrap rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold px-3 py-1.5"></span>
+                    <span id="countBadge" class="hidden whitespace-nowrap rounded-full bg-blue-50 text-blue-900 text-xs font-semibold px-3 py-1.5"></span>
                 </div>
 
                 <div id="fuzzyNote" class="hidden mt-4 items-center gap-2 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2"></div>
@@ -98,8 +98,8 @@
                 const m = (maskapai || '').toLowerCase();
                 if (m.includes('airasia')) return 'bg-red-50 text-red-700';
                 if (m.includes('firefly')) return 'bg-amber-50 text-amber-700';
-                if (m.includes('super air jet')) return 'bg-indigo-50 text-indigo-700';
-                if (m === 'iu') return 'bg-indigo-50 text-indigo-700';
+                if (m.includes('super air jet')) return 'bg-blue-50 text-blue-900';
+                if (m === 'iu') return 'bg-blue-50 text-blue-900';
                 return 'bg-gray-100 text-gray-600';
             }
 

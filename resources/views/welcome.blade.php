@@ -11,11 +11,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-gray-100 flex flex-col">
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-gray-100 flex flex-col">
 
         <header class="max-w-5xl w-full mx-auto px-6 py-8 flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-indigo-600 text-white">
+                <span class="flex items-center justify-center w-9 h-9 rounded-xl bg-blue-800 text-white">
                     <x-application-logo class="w-5 h-5 fill-current" />
                 </span>
                 <span class="font-semibold text-gray-800 text-lg">{{ config('app.name') }}</span>
@@ -23,16 +23,16 @@
 
             <nav class="flex items-center gap-4 text-sm font-medium">
                 @auth
-                    <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-indigo-600 transition">{{ __('Dashboard') }}</a>
+                    <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-blue-800 transition">{{ __('Dashboard') }}</a>
                 @else
-                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-indigo-600 transition">{{ __('Masuk') }}</a>
+                    <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-800 transition">{{ __('Masuk') }}</a>
                 @endauth
             </nav>
         </header>
 
         <main class="flex-1 flex items-center">
             <div class="max-w-5xl w-full mx-auto px-6 py-16 text-center">
-                <span class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-200 mb-6">
+                <span class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-800 text-white shadow-lg shadow-blue-200 mb-6">
                     <x-application-logo class="w-8 h-8 fill-current" />
                 </span>
 
@@ -45,11 +45,11 @@
 
                 <div class="mt-8 flex items-center justify-center gap-4">
                     @auth
-                        <a href="{{ route('dashboard') }}" class="px-6 py-3 rounded-md bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">
+                        <a href="{{ route('dashboard') }}" class="px-6 py-3 rounded-md bg-blue-800 text-white font-semibold hover:bg-blue-900 transition">
                             {{ __('Buka Dashboard') }}
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="px-6 py-3 rounded-md bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">
+                        <a href="{{ route('login') }}" class="px-6 py-3 rounded-md bg-blue-800 text-white font-semibold hover:bg-blue-900 transition">
                             {{ __('Masuk') }}
                         </a>
                     @endauth
