@@ -18,6 +18,13 @@
             @endif
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6" id="searchPanel" @style(['display:none' => $total === 0])>
+                @if ($lastUpdated)
+                    <div class="mb-4 flex items-center gap-2 text-sm text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-3 py-2">
+                        <span>&#128337;</span>
+                        <span>{{ __('Data terakhir diperbarui:') }} {{ \Illuminate\Support\Carbon::parse($lastUpdated)->format('d-m-Y H:i') }} WIB</span>
+                    </div>
+                @endif
+
                 <div class="flex items-center gap-3">
                     <div class="flex-1">
                         <x-text-input

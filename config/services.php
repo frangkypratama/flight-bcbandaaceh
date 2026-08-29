@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'manifest_sync' => [
+        'api_key' => env('MANIFEST_SYNC_API_KEY'),
+    ],
+
 ];

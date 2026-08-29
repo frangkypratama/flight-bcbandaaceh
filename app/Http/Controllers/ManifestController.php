@@ -13,6 +13,7 @@ class ManifestController extends Controller
     {
         return view('manifest.index', [
             'total' => Passenger::count(),
+            'lastUpdated' => Passenger::max('updated_at'),
         ]);
     }
 
