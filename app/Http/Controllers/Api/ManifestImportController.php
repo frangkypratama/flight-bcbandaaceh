@@ -88,7 +88,7 @@ class ManifestImportController extends Controller
                         'maskapai' => $validated['airline_code'],
                         'penerbangan' => $penerbangan,
                         'tanggal' => $tanggal,
-                        'nama' => $passengerData['name'],
+                        'nama' => $this->normalizeName($passengerData['name']),
                     ],
                     [
                         'flight_id' => $flight->id,
@@ -118,5 +118,15 @@ class ManifestImportController extends Controller
             'flight' => $penerbangan,
             'date' => $tanggal,
         ], 201);
+    }
+
+    /**
+     * Samakan format nama penumpang supaya pemisah "," dan "/" (yang bisa berbeda
+     * antar hasil parsing Claude untuk dokumen yang sama) tidak dianggap nama berbeda
+     * saat dedup lewat updateOrCreate.
+     */
+    private function normalizeName(string $name): string
+    {
+        return trim(preg_replace('/\s+/', ' ', str_replace(',', '/', $name)));
     }
 }
