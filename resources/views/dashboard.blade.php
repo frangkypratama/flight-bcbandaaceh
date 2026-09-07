@@ -515,7 +515,7 @@
                 });
             });
 
-            setActivePreset('30');
+            setActivePreset('ytd');
             render(initial);
         })();
         </script>

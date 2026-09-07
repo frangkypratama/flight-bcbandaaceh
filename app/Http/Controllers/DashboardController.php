@@ -200,7 +200,7 @@ class DashboardController extends Controller
         $minDate = $normalizedDates[0];
 
         $to = ($to && $to <= $maxDate) ? $to : $maxDate;
-        $from = $from ?: Carbon::parse($to)->subDays(29)->format('Y-m-d');
+        $from = $from ?: Carbon::parse($to)->startOfYear()->format('Y-m-d');
 
         if ($from > $to) {
             [$from, $to] = [$to, $from];
