@@ -1,3 +1,24 @@
+{{--
+    Halaman ini pakai Tailwind lewat CDN (Play CDN), BUKAN dari public/build
+    hasil kompilasi lokal — supaya class Tailwind yang dipakai di sini selalu
+    aktif di production tanpa perlu jalankan `npm run build` + upload manual
+    tiap ada perubahan tampilan. Konfigurasi di bawah (font Figtree + plugin
+    forms) disamakan dengan tailwind.config.js supaya tampilan tetap konsisten
+    dengan halaman lain yang masih pakai public/build.
+--}}
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['Figtree', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"'],
+                },
+            },
+        },
+    };
+</script>
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
