@@ -71,6 +71,7 @@
                                 <button type="button" data-days="7" class="preset-btn px-3 py-1.5 text-sm rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50">7 {{ __('hari') }}</button>
                                 <button type="button" data-days="30" class="preset-btn px-3 py-1.5 text-sm rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50">30 {{ __('hari') }}</button>
                                 <button type="button" data-days="90" class="preset-btn px-3 py-1.5 text-sm rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50">90 {{ __('hari') }}</button>
+                                <button type="button" data-days="ytd" class="preset-btn px-3 py-1.5 text-sm rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50" title="{{ __('Year to Date — 1 Jan s/d tanggal data terbaru') }}">YTD</button>
                                 <button type="button" data-days="all" class="preset-btn px-3 py-1.5 text-sm rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50">{{ __('Semua') }}</button>
                             </div>
                         </div>
@@ -230,6 +231,17 @@
                 return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
             }
 
+            // .toISOString() mengonversi ke UTC — untuk zona waktu WIB (UTC+7),
+            // tengah malam lokal jadi jam 17:00 UTC HARI SEBELUMNYA, jadi
+            // .toISOString().slice(0,10) bisa mundur satu hari. Format manual
+            // dari komponen tanggal lokal supaya tidak ikut ter-geser.
+            function toLocalISODate(d) {
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
+            }
+
             function setActivePreset(days) {
                 presetButtons.forEach(btn => {
                     const active = btn.dataset.days === String(days);
@@ -237,6 +249,10 @@
                     btn.classList.toggle('text-white', active);
                     btn.classList.toggle('border-blue-800', active);
                     btn.classList.toggle('text-gray-600', !active);
+                    // hover:bg-gray-50 punya spesifisitas CSS lebih tinggi dari bg-blue-800
+                    // (pseudo-class :hover), jadi harus dicopot saat aktif agar teks putih
+                    // tidak hilang ditelan background abu-abu saat mouse masih di atas tombol.
+                    btn.classList.toggle('hover:bg-gray-50', !active);
                 });
             }
 
@@ -476,12 +492,17 @@
                     if (btn.dataset.days === 'all') {
                         fromInput.value = dataMin;
                         toInput.value = dataMax;
+                    } else if (btn.dataset.days === 'ytd') {
+                        const to = new Date(dataMax + 'T00:00:00');
+                        const from = new Date(to.getFullYear(), 0, 1);
+                        toInput.value = dataMax;
+                        fromInput.value = toLocalISODate(from);
                     } else {
                         const to = new Date(dataMax + 'T00:00:00');
                         const from = new Date(to);
                         from.setDate(from.getDate() - (Number(btn.dataset.days) - 1));
                         toInput.value = dataMax;
-                        fromInput.value = from.toISOString().slice(0, 10);
+                        fromInput.value = toLocalISODate(from);
                     }
                     fetchAndRender();
                 });
