@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ManifestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -9,9 +10,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/data', [DashboardController::class, 'data'])->name('dashboard.data');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/manifest', [ManifestController::class, 'index'])->name('manifest.index');
